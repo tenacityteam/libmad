@@ -19,10 +19,6 @@
  * $Id: layer12.c,v 1.17 2004/02/05 09:02:39 rob Exp $
  */
 
-# ifdef HAVE_CONFIG_H
-#  include "config.h"
-# endif
-
 # include "global.h"
 
 # ifdef HAVE_LIMITS_H
