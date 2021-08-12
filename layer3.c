@@ -2604,6 +2604,11 @@ int mad_layer_III(struct mad_stream *stream, struct mad_frame *frame)
     next_md_begin = 0;
 
   md_len = si.main_data_begin + frame_space - next_md_begin;
+  if (md_len + MAD_BUFFER_GUARD > MAD_BUFFER_MDLEN) {
+    stream->error = MAD_ERROR_LOSTSYNC;
+    stream->sync = 0;
+    return -1;
+  }
 
   frame_used = 0;
 
@@ -2621,8 +2626,11 @@ int mad_layer_III(struct mad_stream *stream, struct mad_frame *frame)
       }
     }
     else {
-      mad_bit_init(&ptr,
-		   *stream->main_data + stream->md_len - si.main_data_begin);
+      memmove(stream->main_data,
+	*stream->main_data + stream->md_len - si.main_data_begin,
+	si.main_data_begin);
+      stream->md_len = si.main_data_begin;
+      mad_bit_init(&ptr, *stream->main_data);
 
       if (md_len > si.main_data_begin) {
 	assert(stream->md_len + md_len -
