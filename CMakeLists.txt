@@ -22,10 +22,13 @@ add_library(mad
     timer.c
     version.c
 )
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mad.h.in ${CMAKE_CURRENT_BINARY_DIR}/mad.h @ONLY)
 target_include_directories(mad PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
 if(WIN32 AND BUILD_SHARED_LIBS)
     set_target_properties(mad PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
@@ -182,7 +185,7 @@ install(TARGETS mad
 
 # Header files
 install(
-  FILES "${CMAKE_CURRENT_SOURCE_DIR}/mad.h"
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/mad.h"
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
@@ -192,16 +195,16 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/packaging/libmad.pc.in
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/packaging/libmad.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 
 # CMake config
-set(ID3TAG_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/mad")
+set(MAD_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/mad")
 install(
   EXPORT madTargets
   FILE madTargets.cmake
   NAMESPACE mad::
-  DESTINATION "${ID3TAG_INSTALL_CMAKEDIR}"
+  DESTINATION "${MAD_INSTALL_CMAKEDIR}"
 )
 configure_package_config_file(packaging/madConfig.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/packaging/madConfig.cmake"
-  INSTALL_DESTINATION "${ID3TAG_INSTALL_CMAKEDIR}"
+  INSTALL_DESTINATION "${MAD_INSTALL_CMAKEDIR}"
 )
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/packaging/madConfigVersion.cmake"
@@ -212,5 +215,5 @@ install(
   FILES
     "${CMAKE_CURRENT_BINARY_DIR}/packaging/madConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/packaging/madConfigVersion.cmake"
-  DESTINATION "${ID3TAG_INSTALL_CMAKEDIR}"
+  DESTINATION "${MAD_INSTALL_CMAKEDIR}"
 )
