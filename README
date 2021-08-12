@@ -143,84 +143,20 @@ Portability Issues
 
 BUILDING AND INSTALLING
 
-Windows Platforms
+  libmad uses the CMake build system and has no dependencies. To build it, run:
 
-  MAD can be built under Windows using either MSVC++ or Cygwin. A MSVC++
-  project file can be found under the `msvc++' subdirectory.
+cmake -D CMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build
+cmake --build build --parallel number-of-cpu-cores
+cmake --install build
 
-  To build libmad using Cygwin, you will first need to install the Cygwin
-  tools:
+  The following CMake options are available which can be toggled by passing
+  '-D OPTION=VALUE' to the CMake configure step (the first call to cmake above):
 
-      http://www.cygwin.com/
-
-  You may then proceed with the following POSIX instructions within the
-  Cygwin shell.
-
-  Note that by default Cygwin will build a library that depends on the
-  Cygwin DLL. You can use MinGW to build a library that does not depend on
-  the Cygwin DLL. To do so, give the option --host=mingw32 to `configure'.
-
-POSIX Platforms (including Cygwin)
-
-  The code is distributed with a `configure' script that will generate for
-  you a `Makefile' and a `config.h' for your platform. See the file
-  `INSTALL' for generic instructions.
-
-  The specific options you may want to give `configure' are:
-
-      --enable-speed            optimize for speed over accuracy
-
-      --enable-accuracy         optimize for accuracy over speed
-
-      --disable-debugging       do not compile with debugging support, and
-                                use more optimizations
-
-      --disable-shared          do not build a shared library
-
-  Note that you need not specify one of --enable-speed or --enable-accuracy;
-  in its default configuration, MAD is optimized for both. You should only
-  use one of these options if you wish to compromise speed or accuracy for
-  the other.
-
-  By default the package will build a shared library if possible for your
-  platform. If you want only a static library, use --disable-shared.
-
-  It is not normally necessary to use the following options, but you may
-  fine-tune the configuration with them if desired:
-
-      --enable-fpm=ARCH         use the ARCH-specific version of the
-                                fixed-point math assembly routines
-                                (current options are: intel, arm, mips,
-                                sparc, ppc; also allowed are: 64bit, approx)
-
-      --enable-sso              use the subband synthesis optimization,
-                                with reduced accuracy
-
-      --disable-aso             do not use certain architecture-specific
-                                optimizations
-
-  By default an appropriate fixed-point assembly routine will be selected
-  for the configured host type, if it can be determined. Thus if you are
-  cross-compiling for another architecture, you should be sure either to
-  give `configure' a host type argument (--host) or to use an explicit
-  --enable-fpm option.
-
-  If an appropriate assembly routine cannot be determined, the default
-  approximation version will be used. In this case, use of an alternate
-  --enable-fpm is highly recommended.
-
-Experimenting and Developing
-
-  Further options for `configure' that may be useful to developers and
-  experimenters are:
-
-      --enable-debugging        enable diagnostic debugging support and
-                                debugging symbols
-
-      --enable-profiling        generate `gprof' profiling code
-
-      --enable-experimental     enable code using the EXPERIMENTAL
-                                preprocessor define
+  * ASO (ON|OFF): Enable CPU Architecture Specific Optimizations
+    (x86, ARM, and MIPS only). ON by default.
+  * EXAMPLE (ON|OFF): Build the example application. Only works on POSIX
+    operating systems. ON by default on POSIX operating systems. The example
+    application is not installed.
 
 ===============================================================================
 
