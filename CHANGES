@@ -6,6 +6,12 @@
 
 ===============================================================================
 
+Version 0.16.0
+  * Add CMake build system
+  * Remove autotools build system
+  * Add pkgconfig and CMake config files
+  * Apply patches from Debian and Fedora
+
 Version 0.15.1 (beta)
 
   * Updated to autoconf 2.59, automake 1.8.2, libtool 1.5.2.
