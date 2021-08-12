@@ -297,6 +297,14 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
 
 /* --- MIPS ---------------------------------------------------------------- */
 
+# elif defined(FPM_MIPS) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+   typedef unsigned int u64_di_t __attribute__ ((mode (DI)));
+#  define MAD_F_MLX(hi, lo, x, y) \
+   do { \
+      u64_di_t __ll = (u64_di_t) (x) * (y); \
+      hi = __ll >> 32; \
+      lo = __ll; \
+   } while (0)
 # elif defined(FPM_MIPS)
 
 /*
