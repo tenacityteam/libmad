@@ -52,7 +52,7 @@ else()
 endif()
 
 option(ASO "Enable CPU Architecture Specific Optimizations (x86, ARM, and MIPS only)" ON)
-if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86")
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86" OR "i386")
   message(STATUS "Using x86 fixed point math")
   target_compile_definitions(mad PRIVATE FPM_INTEL)
   if(ASO)
