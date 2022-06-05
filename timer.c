@@ -27,7 +27,7 @@
 #  include <assert.h>
 # endif
 
-# include "timer.h"
+# include "mad.h"
 
 mad_timer_t const mad_timer_zero = { 0, 0 };
 

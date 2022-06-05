@@ -23,8 +23,7 @@
 
 # include <stdlib.h>
 
-# include "bit.h"
-# include "stream.h"
+# include "mad.h"
 
 /*
  * NAME:	stream->init()
