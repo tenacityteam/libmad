@@ -4,6 +4,7 @@ project(mad VERSION 0.16.0)
 option(BUILD_SHARED_LIBS "Build dynamic library" ON)
 
 include(GNUInstallDirs)
+include(CheckTypeSize)
 
 #
 # Build
@@ -84,6 +85,8 @@ else()
   option(FPM_DEFAULT "Generic fixed-point math" ON)
 endif()
 
+
+check_type_size(int SIZEOF_INT BUILTIN_TYPES_ONLY LANGUAGE C)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mad.h.in ${CMAKE_CURRENT_BINARY_DIR}/mad.h @ONLY)
 
 include(CheckIncludeFile)
