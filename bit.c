@@ -27,7 +27,7 @@
 #  define CHAR_BIT  8
 # endif
 
-# include "bit.h"
+# include "mad.h"
 
 /*
  * This is the lookup table for computing the CRC-check word.

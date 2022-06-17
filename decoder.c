@@ -43,10 +43,7 @@
 #  include <errno.h>
 # endif
 
-# include "stream.h"
-# include "frame.h"
-# include "synth.h"
-# include "decoder.h"
+# include "mad.h"
 
 /*
  * NAME:	decoder->init()

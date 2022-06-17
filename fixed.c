@@ -21,7 +21,7 @@
 
 # include "global.h"
 
-# include "fixed.h"
+# include "mad.h"
 
 /*
  * NAME:	fixed->abs()

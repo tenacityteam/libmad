@@ -21,9 +21,7 @@
 
 # include "global.h"
 
-# include "fixed.h"
-# include "frame.h"
-# include "synth.h"
+# include "mad.h"
 
 /*
  * NAME:	synth->init()

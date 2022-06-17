@@ -27,10 +27,7 @@
 #  define CHAR_BIT  8
 # endif
 
-# include "fixed.h"
-# include "bit.h"
-# include "stream.h"
-# include "frame.h"
+# include "mad.h"
 # include "layer12.h"
 
 /*

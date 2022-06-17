@@ -4,6 +4,7 @@ project(mad VERSION 0.16.0)
 option(BUILD_SHARED_LIBS "Build dynamic library" ON)
 
 include(GNUInstallDirs)
+include(CheckTypeSize)
 
 #
 # Build
@@ -22,7 +23,6 @@ add_library(mad
     timer.c
     version.c
 )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mad.h.in ${CMAKE_CURRENT_BINARY_DIR}/mad.h @ONLY)
 target_include_directories(mad PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
@@ -54,36 +54,40 @@ endif()
 option(ASO "Enable CPU Architecture Specific Optimizations (x86, ARM, and MIPS only)" ON)
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86" OR "i386")
   message(STATUS "Using x86 fixed point math")
-  target_compile_definitions(mad PRIVATE FPM_INTEL)
+  option (FPM_INTEL "x86 fixed point math" ON)
   if(ASO)
     target_compile_definitions(mad PRIVATE ASO_ZEROCHECK)
   endif()
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES ".*(arm|ARM).*")
   message(STATUS "Using ARM fixed point math")
-  target_compile_definitions(mad PRIVATE FPM_ARM)
+  option (FPM_ARM "ARM fixed point math" ON)
   if(ASO)
     target_compile_definitions(mad PRIVATE ASO_INTERLEAVE1 ASO_IMDCT)
     target_sources(mad PRIVATE imdct_l_arm.S)
   endif()
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES ".*(mips|MIPS).*")
   message(STATUS "Using MIPS fixed point math")
-  target_compile_definitions(mad PRIVATE FPM_MIPS)
+  option(FPM_MIPS "MIPS fixed point math" ON)
   if(ASO)
     target_compile_definitions(mad PRIVATE ASO_INTERLEAVE2 ASO_ZEROCHECK)
   endif()
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES ".*(sparc|SPARC).*")
   message(STATUS "Using SPARC fixed point math")
-  target_compile_definitions(mad PRIVATE FPM_SPARC)
+  option(FPM_SPARC "SPARC fixed point math" ON)
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES ".(ppc|PPC).*")
   message(STATUS "Using PowerPC fixed point math")
-  target_compile_definitions(mad PRIVATE FPM_PPC)
+  option(FPM_PPC "PowerPC fixed point math" ON)
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES ".*(x86_64|x86-64|x64|AMD64|amd64).*")
   message(STATUS "Using 64 bit fixed point math")
-  target_compile_definitions(mad PRIVATE FPM_64BIT)
+  option(FPM_64BIT "64 bit fixed point math" ON)
 else()
   message(WARNING "Target CPU architecture not detected. Fixed-point math will yield limited accuracy.")
-  target_compile_definitions(mad PRIVATE FPM_DEFAULT)
+  option(FPM_DEFAULT "Generic fixed-point math" ON)
 endif()
+
+
+check_type_size(int SIZEOF_INT BUILTIN_TYPES_ONLY LANGUAGE C)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mad.h.in ${CMAKE_CURRENT_BINARY_DIR}/mad.h @ONLY)
 
 include(CheckIncludeFile)
 check_include_file(sys/types.h HAVE_SYS_TYPES_H)

@@ -23,10 +23,7 @@
 
 # include <stdlib.h>
 
-# include "bit.h"
-# include "stream.h"
-# include "frame.h"
-# include "timer.h"
+# include "mad.h"
 # include "layer12.h"
 # include "layer3.h"
 
