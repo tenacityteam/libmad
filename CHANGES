@@ -6,6 +6,10 @@
 
 ===============================================================================
 
+Version 0.16.1
+  * Fix generation of mad.h broken by move to CMake
+  * Add CMake options for CPU architecture-specific optimizations
+
 Version 0.16.0
   * Add CMake build system
   * Remove autotools build system
