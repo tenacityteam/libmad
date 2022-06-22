@@ -6,6 +6,10 @@
 
 ===============================================================================
 
+Version 0.16.2
+  * Fix building assembly file on ARM
+  * Fix pkgconfig file when CMAKE_INSTALL_{INCLUDE,LIB}DIR are absolute paths
+
 Version 0.16.1
   * Fix generation of mad.h broken by move to CMake
   * Add CMake options for CPU architecture-specific optimizations
