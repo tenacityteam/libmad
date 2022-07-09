@@ -352,7 +352,12 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
 
 /* --- MIPS ---------------------------------------------------------------- */
 
-# elif defined(FPM_MIPS) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+# elif defined(FPM_MIPS)
+
+/*
+ * This MIPS version is fast and accurate; the disposition of the least
+ * significant bit depends on OPT_ACCURACY via mad_f_scale64().
+ */
    typedef unsigned int u64_di_t __attribute__ ((mode (DI)));
 #  define MAD_F_MLX(hi, lo, x, y) \
    do { \
@@ -360,37 +365,6 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
       hi = __ll >> 32; \
       lo = __ll; \
    } while (0)
-# elif defined(FPM_MIPS)
-
-/*
- * This MIPS version is fast and accurate; the disposition of the least
- * significant bit depends on OPT_ACCURACY via mad_f_scale64().
- */
-#  define MAD_F_MLX(hi, lo, x, y)  \
-    asm ("mult	%2,%3"  \
-	 : "=l" (lo), "=h" (hi)  \
-	 : "%r" (x), "r" (y))
-
-# if defined(HAVE_MADD_ASM)
-#  define MAD_F_MLA(hi, lo, x, y)  \
-    asm ("madd	%2,%3"  \
-	 : "+l" (lo), "+h" (hi)  \
-	 : "%r" (x), "r" (y))
-# elif defined(HAVE_MADD16_ASM)
-/*
- * This loses significant accuracy due to the 16-bit integer limit in the
- * multiply/accumulate instruction.
- */
-#  define MAD_F_ML0(hi, lo, x, y)  \
-    asm ("mult	%2,%3"  \
-	 : "=l" (lo), "=h" (hi)  \
-	 : "%r" ((x) >> 12), "r" ((y) >> 16))
-#  define MAD_F_MLA(hi, lo, x, y)  \
-    asm ("madd16	%2,%3"  \
-	 : "+l" (lo), "+h" (hi)  \
-	 : "%r" ((x) >> 12), "r" ((y) >> 16))
-#  define MAD_F_MLZ(hi, lo)  ((mad_fixed_t) (lo))
-# endif
 
 # if defined(OPT_SPEED)
 #  define mad_f_scale64(hi, lo)  \
