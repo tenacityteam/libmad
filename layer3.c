@@ -1733,7 +1733,10 @@ void sdctII(mad_fixed_t const x[18], mad_fixed_t X[18])
     tmp[i + 2] = mad_f_mul(x[i + 2] - x[18 - (i + 2) - 1], scale[i + 2]);
   }
 
-  fastsdct(tmp, &X[1]);
+  mad_fixed_t tmpX[18];
+  memcpy(tmpX, X + 1, 17);
+  tmpX[18] = X[0];
+  fastsdct(tmp, &tmpX[0]);
 
   /* output accumulation */
 
